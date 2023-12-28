@@ -1,0 +1,10 @@
+pandas 
+streamlit
+PyPDF2 
+python-docx 
+python-pptx 
+Pillow 
+pytesseract 
+langchain 
+google-cloud-vision
+google-cloud-documentai
