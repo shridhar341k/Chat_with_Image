@@ -142,6 +142,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+dev-mgmt-cdu-da-ea-53c6cfcb9d0c.json
 
 # Pyre type checker
 .pyre/
