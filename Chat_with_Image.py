@@ -51,45 +51,10 @@ def get_image_text(image_file):
     extracted_text = response.text_annotations[0].description if response.text_annotations else ""
     return extracted_text
 
-def get_pdf_text(pdf):
-    text = ""
-    pdf_reader = PdfReader(BytesIO(pdf.read()))
-    for page in pdf_reader.pages:
-        text += page.extract_text()
-    return text
-
-def get_doc_text(doc):
-    docx = Document(BytesIO(doc.read()))
-    full_text = []
-    for paragraph in docx.paragraphs:
-        full_text.append(paragraph.text)
-    return ' '.join(full_text)
-
-def get_ppt_text(ppt):
-    pres = Presentation(BytesIO(ppt.read()))
-    full_text = []
-    for slide in pres.slides:
-        for shape in slide.shapes:
-            if hasattr(shape, "text"):
-                full_text.append(shape.text)
-    return ' '.join(full_text)
-
 def get_data_text(data_files):
     text = ""
     for data_file in data_files:
-        if data_file.type == "text/csv":
-            df = pd.read_csv(data_file)
-            text += ' '.join(df.astype(str).values.flatten())
-        elif data_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            df = pd.read_excel(data_file)
-            text += ' '.join(df.astype(str).values.flatten())
-        elif data_file.type == "application/pdf":
-            text += get_pdf_text(data_file)
-        elif data_file.type == "application/msword" or data_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            text += get_doc_text(data_file)
-        elif data_file.type == "application/vnd.ms-powerpoint" or data_file.type == "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-            text += get_ppt_text(data_file)
-        elif data_file.type in ["image/jpeg", "image/jpg", "image/png"]:
+        if data_file.type in ["image/jpeg", "image/jpg", "image/png"]:
             text += get_image_text(data_file)
         else:
             st.error(f"File type not supported: {data_file.type}")
@@ -152,9 +117,9 @@ def main():
     with st.sidebar:
         st.subheader("Your documents")
         data_files = st.file_uploader(
-            "Upload your PDFs/CSVs/Excels/DOCs/PPTs/Images here and click on 'Process'",
+            "Images here and click on 'Process'",
             accept_multiple_files=True,
-            type=['pdf', 'csv', 'xlsx', 'doc', 'docx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png']
+            type=['jpg', 'jpeg', 'png']
         )
         if st.button("Process"):
             with st.spinner("Processing"):
